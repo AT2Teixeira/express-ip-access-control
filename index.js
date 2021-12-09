@@ -69,7 +69,7 @@ function AccessControl(opts) {
 	return function(req, res, next) {
 		var clientIp = _options.forceConnectionAddress === true
 			? req.connection.remoteAddress
-			: req.ip || req.connection.remoteAddress;
+			: req.headers['x-forwarded-for'] ? (req.headers['x-forwarded-for']).split(',')[0] : "";
 
 		var inAllows = ipMatch(clientIp, _options.allows);
 		var inDenys = ipMatch(clientIp, _options.denys);
